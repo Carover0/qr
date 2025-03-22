@@ -1,0 +1,59 @@
+@bot.message_handler(commands=['qr'])
+def generar_qr_zec(m):
+    txsb = m.text.split(' ')
+    if len(txsb) < 2:
+        bot.reply_to(m, "⚠️ Por favor, proporciona una dirección válida. Ejemplo:\n\n/qr <dirección>")
+        return
+    direccion = txsb[1]
+    try:
+        qr_data = direccion
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_H, 
+            box_size=6,  
+            border=1,
+        )
+        qr.add_data(qr_data)
+        qr.make(fit=True)
+        if direccion[0] == "u" and len(direccion) == 213:
+            print(direccion)
+            icon_url = 'https://gateway.btfs.io/btfs/QmUbDtP7r56HqGMqsYBH9zYbPXoeuLwKFkCVFEBeZeWt4Z?filename=zcashcircular.png'
+            color = "white"
+            fondo_color = "black"
+            red = "ZCASH"
+            activos_soportados = "ZEC"
+        elif direccion[0] == "t" and len(direccion) == 35:
+            icon_url = 'https://gateway.btfs.io/btfs/QmUbDtP7r56HqGMqsYBH9zYbPXoeuLwKFkCVFEBeZeWt4Z?filename=zcashcircular.png'
+            color = "white"
+            fondo_color = "black"
+            red = "ZCASH"
+            activos_soportados = "ZEC"    
+        else:
+            bot.reply_to(m, f"⚠️ Por favor, proporciona una dirección válida que comience con 0 y 42 carcteres para Polygon, T y 34 caracteres para Tron, t y 35 catacteres o u y 213 caracteres para Zcash")
+            return
+        response = requests.get(icon_url)
+        icon = Image.open(BytesIO(response.content)).convert("RGBA")
+        img_qr = qr.make_image(fill_color=color, back_color=fondo_color).convert('RGB')
+        img_w, img_h = img_qr.size
+        factor = 4  # Cambia este valor para ajustar el tamaño del ícono
+        size_w = img_w // factor
+        size_h = img_h // factor
+        icon = icon.resize((size_w, size_h), Image.LANCZOS)
+        pos_w = (img_w - size_w) // 2
+        pos_h = (img_h - size_h) // 2
+        img_qr.paste(icon, (pos_w, pos_h), icon)
+        buffer = BytesIO()
+        img_qr.save(buffer, format="PNG")
+        buffer.seek(0)
+        markup = InlineKeyboardMarkup()
+        cerrar = InlineKeyboardButton(text="❌ Cerrar", callback_data="cerrar_qr")  
+        markup.add(cerrar)
+        bot.delete_message(m.chat.id, m.message_id)
+        ad_red = f"⚠️ Deposite solo activos de la red <b>{red}</b> porque en caso contrario se perderan sus fondos."
+        msg = (
+              f"Red: <b>{red}</b> - Activos soportados: <b>{activos_soportados}</b>\n\n"
+              f"Tu direccion de deposito:\n<code>{direccion}</code>\n\n{ad_red}"
+        )
+        bot.send_photo(m.chat.id, buffer, caption=msg, parse_mode="html" , reply_markup=markup)
+    except Exception as e:
+        bot.reply_to(m, f"❌ Error al generar el código QR: {str(e)}")
