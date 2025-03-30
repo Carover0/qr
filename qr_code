@@ -29,7 +29,7 @@ def generar_qr_zec(m):
             red = "ZCASH"
             activos_soportados = "ZEC"    
         else:
-            bot.reply_to(m, f"⚠️ Por favor, proporciona una dirección válida que comience con 0 y 42 carcteres para Polygon, T y 34 caracteres para Tron, t y 35 catacteres o u y 213 caracteres para Zcash")
+            bot.reply_to(m, f"⚠️ Por favor, proporciona una dirección válida, T y 34 caracteres para Tron, t y 35 catacteres o u y 213 caracteres para Zcash")
             return
         response = requests.get(icon_url)
         icon = Image.open(BytesIO(response.content)).convert("RGBA")
