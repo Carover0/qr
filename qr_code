@@ -17,13 +17,13 @@ def generar_qr_zec(m):
         qr.make(fit=True)
         if direccion[0] == "u" and len(direccion) == 213:
             print(direccion)
-            icon_url = 'https://gateway.btfs.io/btfs/QmUbDtP7r56HqGMqsYBH9zYbPXoeuLwKFkCVFEBeZeWt4Z?filename=zcashcircular.png'
+            icon_url = 'https://free2z.cash/uploadz/public/carover0/zcashcircular.png'
             color = "white"
             fondo_color = "black"
             red = "ZCASH"
             activos_soportados = "ZEC"
         elif direccion[0] == "t" and len(direccion) == 35:
-            icon_url = 'https://gateway.btfs.io/btfs/QmUbDtP7r56HqGMqsYBH9zYbPXoeuLwKFkCVFEBeZeWt4Z?filename=zcashcircular.png'
+            icon_url = 'https://free2z.cash/uploadz/public/carover0/zcashcircular.png'
             color = "white"
             fondo_color = "black"
             red = "ZCASH"
