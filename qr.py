@@ -34,7 +34,7 @@ def generar_qr_zec(m):
         icon = Image.open(BytesIO(response.content)).convert("RGBA")
         img_qr = qr.make_image(fill_color=color, back_color=fondo_color).convert('RGB')
         img_w, img_h = img_qr.size
-        factor = 4  # Cambia este valor para ajustar el tamaño del ícono
+        factor = 4  
         size_w = img_w // factor
         size_h = img_h // factor
         icon = icon.resize((size_w, size_h), Image.LANCZOS)
